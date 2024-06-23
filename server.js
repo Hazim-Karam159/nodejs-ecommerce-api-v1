@@ -4,7 +4,9 @@ const dotenv = require("dotenv").config();
 const Category = require("./models/categeorySchema");
 const connectDB = require("./config/database");
 const categoryRoute = require("./Routes/categoryRoute");
-
+const AppError = require("./utils/AppError");
+const globalErrorHandler = require("./middlewares/errorHandlerMiddleware");
+const unhandledRejection = require("./middlewares/unhandledRejectionMiddlewares");
 
 app.use(express.json());
 
@@ -12,8 +14,16 @@ connectDB();
 
 app.use("/api/v1/categories", categoryRoute);
 
+app.all("*", (req, res, next) => { 
+  const error = new AppError(`Can't find this route ${req.originalUrl} on the server`, 400);
+  next(error);
+})
+
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT,() => {
+const server = app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
-})
+});
+
+process.on('unhandledRejection',unhandledRejection)
