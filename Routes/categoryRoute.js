@@ -1,14 +1,15 @@
 const Router = require("express").Router();
 const categoryController = require("../Controllers/categoryController");
+const categoryValidator = require("../utils/validator/categoryValidator");
 
 Router.route("/")
   .get(categoryController.getAllCategories)
-  .post(categoryController.addCategory);
+  .post(categoryValidator.addCategoryValidator ,categoryController.addCategory);
 
 // categoryId lazm tkon nfs el name elle hnak f el {categoryId} = req.params
 Router.route("/:categoryId")
-  .get(categoryController.getCategory)
-  .patch(categoryController.updateCategory)
-  .delete(categoryController.deleteCategory);
+  .get(categoryValidator.getCategoryValidator  ,categoryController.getCategory)
+  .patch(categoryValidator.updateCategoryValidator ,categoryController.updateCategory)
+  .delete(categoryValidator.deleteCategoryValidator  ,categoryController.deleteCategory);
 
 module.exports = Router;
