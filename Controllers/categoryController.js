@@ -1,6 +1,6 @@
-const Category = require("../models/categeorySchema.js");
-const slugify = require("slugify");
 const asyncHandler = require("express-async-handler");
+const slugify = require("slugify");
+const Category = require("../models/categeorySchema");
 const AppError = require("../utils/AppError");
 
 // @access : Public
