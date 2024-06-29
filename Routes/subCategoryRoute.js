@@ -1,4 +1,4 @@
-const Router = require("express").Router();
+const Router = require("express").Router({ mergeParams: true });
 const subCategoryController = require("../Controllers/subCategoryController");
 const subCategoryValidator = require("../utils/validator/subCategoryValidator");
 

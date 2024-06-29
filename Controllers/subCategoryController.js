@@ -7,9 +7,15 @@ const getListOfSubCategories = asyncHandler(async (req, res, next) => {
   const { page = 1, limit = 10 } = req.query;
   const skip = limit * (page - 1);
 
-  const subCategories = await SubCategory.find({}, { __v: false })
+  let filterObj = {};
+  if (req.params.categoryId)
+    filterObj = { category: req.params.categoryId };
+
+
+  const subCategories = await SubCategory.find(filterObj, { __v: false })
 .limit(limit)
-    .skip(skip);
+    .skip(skip)
+    .populate({path: "category", select: "name -_id"});
 
   res
     .status(200)
@@ -19,7 +25,7 @@ const getListOfSubCategories = asyncHandler(async (req, res, next) => {
 const getSubCategory = asyncHandler(async (req, res, next) => {
   const { subCategoryId } = req.params;
 
-  const subCategory = await SubCategory.findById(subCategoryId);
+  const subCategory = await SubCategory.findById(subCategoryId).populate({path: "category", select: "name -_id"});
 
   if (!subCategory) {
     

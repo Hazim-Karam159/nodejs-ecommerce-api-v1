@@ -1,6 +1,10 @@
 const Router = require("express").Router();
 const categoryController = require("../Controllers/categoryController");
 const categoryValidator = require("../utils/validator/categoryValidator");
+const subCategoryRoute = require("./subCategoryRoute");
+
+
+Router.use("/:categoryId/subCategories", subCategoryRoute);
 
 Router.route("/")
   .get(categoryController.getAllCategories)
