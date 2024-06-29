@@ -6,7 +6,7 @@ const AppError = require("../utils/AppError");
 // @access : Public
 const getAllCategories = asyncHandler(async (req, res, next) => {
   // const query = req.query;
-  const { page, limit } = req.query;
+  const { page = 1, limit = 10} = req.query;
   // const page = query.page;
   // const limit = query.limit;
   const skip = limit * (page - 1);
