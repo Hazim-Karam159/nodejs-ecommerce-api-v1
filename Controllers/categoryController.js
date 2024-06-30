@@ -23,11 +23,11 @@ const getCategory = asyncHandler(async (req, res, next) => {
   const { categoryId } = req.params;
   const category = await Category.findById(categoryId);
   if (!category) {
-    const notFoundCategory = new AppError(
+    
+    return next(new AppError(
       `Category not found for this id ${categoryId}`,
       404
-    );
-    return next(notFoundCategory);
+    ));
   }
   res.status(200).json({ data: { category } });
 });
@@ -52,11 +52,11 @@ const updateCategory = asyncHandler(async (req, res, next) => {
     }
   ).select("-__v");
   if (!updatedCategory) {
-    const notFoundCategory = new AppError(
+   
+    return next(new AppError(
       `Category not found for this id ${categoryId}`,
       404
-    );
-    return next(notFoundCategory);
+    ));
   }
   res.status(200).json(updatedCategory);
 });
@@ -67,11 +67,11 @@ const deleteCategory = asyncHandler(async (req, res, next) => {
   const deletedCategory = await Category.deleteOne({ _id: categoryId });
 
   if (deletedCategory.deletedCount === 0) {
-    const notFoundCategory = new AppError(
+    
+    return next( new AppError(
       `Category not found for this id ${categoryId}`,
       404
-    );
-    return next(notFoundCategory);
+    ));
   }
   res.status(204).send();
 });

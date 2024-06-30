@@ -6,6 +6,7 @@ const connectDB = require("./config/database");
 const categoryRoute = require("./Routes/categoryRoute");
 const subCategoryRoute = require("./Routes/subCategoryRoute");
 const brandRoute = require("./Routes/brandRoute");
+const productRoute = require("./Routes/productRoute");
 const AppError = require("./utils/AppError");
 const globalErrorHandler = require("./middlewares/errorHandlerMiddleware");
 const unhandledRejection = require("./middlewares/unhandledRejectionMiddlewares");
@@ -16,7 +17,8 @@ connectDB();
 
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/subCategories", subCategoryRoute);
-app.use("/api/v1/brands",brandRoute)
+app.use("/api/v1/brands", brandRoute);
+app.use("/api/v1/products", productRoute);
 
 app.all("*", (req, res, next) => {
   const error = new AppError(
