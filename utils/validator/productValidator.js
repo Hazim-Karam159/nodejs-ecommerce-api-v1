@@ -1,5 +1,7 @@
 const { check } = require("express-validator");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
+const Category = require("../../models/categeorySchema");
+const SubCategory = require("../../models/subCategorySchema");
 
 const addProductValidator = [
   check("title")
@@ -7,7 +9,7 @@ const addProductValidator = [
     .withMessage("Product Title is required")
     .isLength({min:3})
     .withMessage("Too Short Product Title")
-    .isLength({max:32})
+    .isLength({max:100})
     .withMessage("Too Long Product Title"),
   check("description")
     .notEmpty()
@@ -68,13 +70,33 @@ const addProductValidator = [
 
   check("category")
     .notEmpty()
-    .withMessage("Product must be belong to a Category")
+    .withMessage("Product must belong to a Category")
     .isMongoId()
-    .withMessage("not valid category ID format"),
-  check("subCategory")
+    .withMessage("Invalid category ID format")
+    .custom( async(categoryId) => {
+      const category = await Category.findById(categoryId);
+      if (!category) { 
+        throw new Error(`Category not found for this ID:  ${categoryId}`);
+      }
+      return true;
+    })
+  ,
+  check("subCategories")
     .optional()
     .isMongoId()
-    .withMessage("not valid subCategory ID format"),
+    .withMessage("not valid subCategory ID format")
+    .custom(async (subCategoriesId) => {
+      const subCategory = await SubCategory.find({ _id: { $exists: true, $in: subCategoriesId } });
+      if (subCategory.length <1 || subCategory.length !== subCategoriesId.length)
+      {
+        throw new Error("Invalid subCategory ID");     
+        }
+    })
+    
+    
+    
+    
+  ,
   check("brand")
     .optional()
     .isMongoId()
