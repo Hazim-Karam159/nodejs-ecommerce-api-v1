@@ -8,7 +8,7 @@ Router.route("/")
   .post(brandValidator.addBrandValidator ,brandController.addBrand);  
 ;
   
-Router.route("/:brandId")
+Router.route("/:id")
   .get(brandValidator.getBrandValidator ,brandController.getBrand)
   .patch(brandValidator.updateBrandValidator ,brandController.updateBrand)
   .delete(brandValidator.deleteBrandValidator ,brandController.deleteBrand);

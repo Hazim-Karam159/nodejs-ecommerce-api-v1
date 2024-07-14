@@ -8,7 +8,7 @@ Router.route("/")
 .post(subCategoryValidator.addSubCategoryValidator ,subCategoryController.addSubCategory)
 
 
-Router.route("/:subCategoryId")
+Router.route("/:id")
   .get( subCategoryValidator.getSubCategoryValidator,subCategoryController.getSubCategory)
   .patch(subCategoryValidator.updateSubCategoryValidator ,subCategoryController.updateSubCategory)
   .delete(subCategoryValidator.deleteSubCategoryValidator ,subCategoryController.deleteSubCategory);

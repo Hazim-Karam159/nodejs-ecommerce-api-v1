@@ -11,7 +11,7 @@ Router.route("/")
   .post(categoryValidator.addCategoryValidator ,categoryController.addCategory);
 
 // categoryId lazm tkon nfs el name elle hnak f el {categoryId} = req.params
-Router.route("/:categoryId")
+Router.route("/:id")
   .get(categoryValidator.getCategoryValidator  ,categoryController.getCategory)
   .patch(categoryValidator.updateCategoryValidator ,categoryController.updateCategory)
   .delete(categoryValidator.deleteCategoryValidator  ,categoryController.deleteCategory);

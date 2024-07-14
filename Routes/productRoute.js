@@ -9,7 +9,7 @@ Router.route('/')
   .post( productValidator.addProductValidator, productController.addProduct);
 
 
-  Router.route('/:productId')
+  Router.route('/:id')
   .get( productValidator.getProductValidator ,productController.getProduct)
   .patch( productValidator.updateProductValidator  ,productController.updateProduct)
   .delete( productValidator.deleteProductValidator ,productController.deleteProduct)

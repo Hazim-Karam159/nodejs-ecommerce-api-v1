@@ -1,11 +1,9 @@
 const { check } = require("express-validator");
+const  slugify  = require("slugify");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 
-
 const getSubCategoryValidator = [
-  check("subCategoryId")
-    .isMongoId()
-    .withMessage("not valid SubCategory ID format"),
+  check("id").isMongoId().withMessage("not valid SubCategory ID format"),
   validatorMiddleware,
 ];
 
@@ -16,7 +14,14 @@ const addSubCategoryValidator = [
     .isLength({ min: 2 })
     .withMessage("Too Short SubCategory Name ")
     .isLength({ max: 32 })
-    .withMessage("Too Long SubCategory Name"),
+    .withMessage("Too Long SubCategory Name")
+    .custom(async (name , {req} ) => {
+      if (name) {
+        req.body.slug = slugify(name);
+      }
+  return true;
+    })
+  ,
 
   check("category")
     .notEmpty()
@@ -27,30 +32,30 @@ const addSubCategoryValidator = [
 ];
 
 const updateSubCategoryValidator = [
+  check("id").isMongoId().withMessage("not valid SubCategory ID format"),
 
-  check("subCategoryId")
-    .isMongoId()
-    .withMessage("not valid SubCategory ID format"),
-  
   check("name")
     .notEmpty()
     .withMessage("Name is required For SubCategory")
     .isLength({ min: 2 })
     .withMessage("Too Short SubCategory Name ")
     .isLength({ max: 32 })
-    .withMessage("Too Long SubCategory Name"),
+    .withMessage("Too Long SubCategory Name")
+    .custom(async (name , {req} ) => {
+      if (name) {
+        req.body.slug = slugify(name);
+      }
+  return true;
+    })
+  ,
 
-  check("category")
-    .isMongoId()
-    .withMessage("not valid SubCategory ID format"),
-  
-    validatorMiddleware,
-]
+  check("category").isMongoId().withMessage("not valid SubCategory ID format"),
+
+  validatorMiddleware,
+];
 
 const deleteSubCategoryValidator = [
-  check("subCategoryId")
-    .isMongoId()
-    .withMessage("not valid SubCategory ID format"),
+  check("id").isMongoId().withMessage("not valid SubCategory ID format"),
   validatorMiddleware,
 ];
 module.exports = {
@@ -58,5 +63,4 @@ module.exports = {
   addSubCategoryValidator,
   updateSubCategoryValidator,
   deleteSubCategoryValidator,
-
 };

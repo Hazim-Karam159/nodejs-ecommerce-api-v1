@@ -1,4 +1,6 @@
 const { check } = require("express-validator");
+const  slugify  = require("slugify");
+
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const Category = require("../../models/categeorySchema");
 const SubCategory = require("../../models/subCategorySchema");
@@ -10,7 +12,14 @@ const addProductValidator = [
     .isLength({min:3})
     .withMessage("Too Short Product Title")
     .isLength({max:100})
-    .withMessage("Too Long Product Title"),
+    .withMessage("Too Long Product Title")
+    .custom(async (name , {req} ) => {
+      if (name) {
+        req.body.slug = slugify(name);
+      }
+  return true;
+    })
+  ,
   check("description")
     .notEmpty()
     .withMessage("Product Description is required")
@@ -105,17 +114,26 @@ const addProductValidator = [
 ];
 
 const getProductValidator = [
-  check("productId").isMongoId().withMessage("not valid product ID format"),
+  check("id").isMongoId().withMessage("not valid product ID format"),
   validatorMiddleware,
 ];
 
 const updateProductValidator = [
-  check("productId").isMongoId().withMessage("not valid product ID format"),
+  check("id").isMongoId().withMessage("not valid product ID format")
+  ,
+  check("title").optional().custom(async (name , {req} ) => {
+    if (name) {
+      req.body.slug = slugify(name);
+    }
+return true;
+  })
+  
+  ,
   validatorMiddleware,
 ];
 
 const deleteProductValidator = [
-  check("productId").isMongoId().withMessage("not valid product ID format"),
+  check("id").isMongoId().withMessage("not valid product ID format"),
   validatorMiddleware,
 ];
 
