@@ -54,6 +54,7 @@ const deleteOne = (Model) =>
     res.status(204).send();
   });
 
+
 module.exports = {
   getAll,
   getOne,
