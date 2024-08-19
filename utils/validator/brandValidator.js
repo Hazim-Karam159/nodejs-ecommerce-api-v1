@@ -35,6 +35,7 @@ const updateBrandValidator = [
     .withMessage("Too Short Updated Name For Brand" )
     .isLength({ max: 32 })
     .withMessage("Too Long Updated Name For Brand")
+    .optional()
   .custom(async (name , {req} ) => {
     if (name) {
       req.body.slug = slugify(name);

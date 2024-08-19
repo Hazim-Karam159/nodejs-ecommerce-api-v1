@@ -35,6 +35,7 @@ const updateCategoryValidator = [
     .withMessage("Too Short Updated Name For Category" )
     .isLength({ max: 32 })
     .withMessage("Too Long Updated Name For Category")
+    .optional()
     .custom(async (name , {req} ) => {
       if (name) {
         req.body.slug = slugify(name);
